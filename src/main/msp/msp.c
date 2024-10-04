@@ -4075,6 +4075,12 @@ static mspResult_e mspProcessInCommand(mspDescriptor_t srcDesc, int16_t cmdMSP, 
         break;
 #endif
 
+    case MSP_SET_PILOT_NAME:
+        memset(pilotConfigMutable()->pilotName, 0, ARRAYLEN(pilotConfig()->pilotName));
+        for (unsigned int i = 0; i < MIN(MAX_NAME_LENGTH, dataSize); i++) {
+            pilotConfigMutable()->pilotName[i] = sbufReadU8(src);
+        }
+
     default:
         // we do not know how to handle the (valid) message, indicate error MSP $M!
         return MSP_RESULT_ERROR;
